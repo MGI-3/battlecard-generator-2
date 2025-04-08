@@ -1,0 +1,193 @@
+// import React from 'react';
+// import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+
+// const styles = StyleSheet.create({
+//   page: {
+//     padding: 40,
+//     fontSize: 12,
+//   },
+//   title: {
+//     fontSize: 24,
+//     marginBottom: 20,
+//     textAlign: 'center',
+//   },
+//   battlecard: {
+//     marginBottom: 30,
+//     borderBottom: '1 solid #ccc',
+//     paddingBottom: 20,
+//   },
+//   section: {
+//     marginBottom: 15,
+//   },
+//   heading: {
+//     fontSize: 16,
+//     marginBottom: 8,
+//     color: '#2563eb',
+//   },
+//   subHeading: {
+//     fontSize: 14,
+//     marginBottom: 5,
+//     color: '#4b5563',
+//   },
+//   content: {
+//     lineHeight: 1.6,
+//     color: '#4b5563',
+//   },
+//   caseStudy: {
+//     marginLeft: 15,
+//     marginTop: 5,
+//     paddingLeft: 10,
+//     borderLeft: '2 solid #93c5fd',
+//   },
+// });
+
+// const BattlecardPDF = ({ battlecards }) => (
+//   <Document>
+//     <Page size="A4" style={styles.page}>
+//       <Text style={styles.title}>Battlecards Report</Text>
+      
+//       {battlecards.map((battlecard, index) => (
+//         <View key={index} style={styles.battlecard}>
+//           <View style={styles.section}>
+//             <Text style={styles.heading}>Problem Area</Text>
+//             <Text style={styles.content}>{battlecard.problem_area}</Text>
+//           </View>
+
+//           <View style={styles.section}>
+//             <Text style={styles.subHeading}>Problem Description</Text>
+//             <Text style={styles.content}>{battlecard.problem_description}</Text>
+//           </View>
+
+//           <View style={styles.section}>
+//             <Text style={styles.subHeading}>Solution & Differentiators</Text>
+//             <Text style={styles.content}>{battlecard.differentiator}</Text>
+//           </View>
+
+//           {battlecard.case_studies && battlecard.case_studies.length > 0 && (
+//             <View style={styles.section}>
+//               <Text style={styles.subHeading}>Case Studies</Text>
+//               {battlecard.case_studies.map((study, studyIndex) => (
+//                 <Text key={studyIndex} style={[styles.content, styles.caseStudy]}>
+//                   {study}
+//                 </Text>
+//               ))}
+//             </View>
+//           )}
+//         </View>
+//       ))}
+//     </Page>
+//   </Document>
+// );
+
+// export default BattlecardPDF;
+
+
+import React from 'react';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontSize: 12,
+    backgroundColor: 'white',
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#2563eb',
+    borderBottom: '1 solid #e5e7eb',
+    paddingBottom: 10,
+  },
+  section: {
+    marginBottom: 15,
+  },
+  heading: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#2563eb',
+    fontWeight: 'bold',
+  },
+  subHeading: {
+    fontSize: 14,
+    marginBottom: 5,
+    color: '#4b5563',
+    fontWeight: 'bold',
+  },
+  content: {
+    lineHeight: 1.6,
+    color: '#4b5563',
+  },
+  caseStudy: {
+    marginLeft: 10,
+    marginTop: 5,
+    paddingLeft: 10,
+    borderLeft: '2 solid #93c5fd',
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 30,
+    left: 40,
+    right: 40,
+    textAlign: 'center',
+    color: '#9ca3af',
+    fontSize: 10,
+    borderTop: '1 solid #e5e7eb',
+    paddingTop: 10,
+  },
+  logo: {
+    position: 'absolute',
+    top: 20,
+    right: 40,
+    fontSize: 10,
+    color: '#9ca3af',
+  },
+  pageNumber: {
+    position: 'absolute',
+    bottom: 30,
+    right: 40,
+    fontSize: 10,
+    color: '#9ca3af',
+  }
+});
+
+const BattlecardPDF = ({ battlecards, companyName = "Battlecard Generator" }) => (
+  <Document>
+    {battlecards.map((battlecard, index) => (
+      <Page key={index} size="A4" style={styles.page}>
+        <Text style={styles.logo}>{companyName}</Text>
+        
+        <View style={styles.header}>
+          <Text>{battlecard.problem_area}</Text>
+        </View>
+        
+        <View style={styles.section}>
+          <Text style={styles.subHeading}>Problem Description</Text>
+          <Text style={styles.content}>{battlecard.problem_description}</Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.subHeading}>Solution & Differentiators</Text>
+          <Text style={styles.content}>{battlecard.differentiator}</Text>
+        </View>
+
+        {battlecard.case_studies && battlecard.case_studies.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.subHeading}>Case Studies</Text>
+            {battlecard.case_studies.map((study, studyIndex) => (
+              <View key={studyIndex} style={styles.caseStudy}>
+                <Text style={styles.content}>{study}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+        
+        <Text style={styles.footer}>Generated by {companyName}</Text>
+        <Text style={styles.pageNumber}>{index + 1} of {battlecards.length}</Text>
+      </Page>
+    ))}
+  </Document>
+);
+
+export default BattlecardPDF;
